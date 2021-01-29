@@ -1,0 +1,127 @@
+MariaDB [BStoyanovdb]> select f.partnum, f.description, s.partnum, s.description from part f, part s where f.partnum = s.partnum and f.description < s.description;
++---------+---------------+---------+-------------+
+| partnum | description   | partnum | description |
++---------+---------------+---------+-------------+
+|      76 | BACKLESS SHOE |      76 | ROAD BIKE   |
++---------+---------------+---------+-------------+
+1 row in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> delete from part
+    -> where description = 'BACKLESS SHOE';
+Query OK, 1 row affected (0.010 sec)
+
+MariaDB [BStoyanovdb]> select o.orderedon, o.name,
+    -> p.partnum, p.price, p.description
+    -> from orders o, part p
+    -> where o.partnum = p.partnum
+    -> and o.orderedon between '1996-09-01' and '1996-09-30'
+    -> order by p.partnum;
++------------+------------+---------+---------+-------------+
+| orderedon  | name       | partnum | price   | description |
++------------+------------+---------+---------+-------------+
+| 1996-09-02 | TRUE WHEEL |      10 | 1200.00 | TANDEM      |
++------------+------------+---------+---------+-------------+
+1 row in set (0.002 sec)
+
+MariaDB [BStoyanovdb]> select orderedon, name, partnum, quantity
+    -> from orders
+    -> where partnum = 10 and quantity = 1 and name = 'TRUE WHEEL';
++------------+------------+---------+----------+
+| orderedon  | name       | partnum | quantity |
++------------+------------+---------+----------+
+| 1996-09-02 | TRUE WHEEL |      10 |        1 |
++------------+------------+---------+----------+
+1 row in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> select s.partnum, s.description,
+    -> (s.price * f.quantity) due,
+    -> f.name, f.partnum
+    -> from part s, orders f
+    -> where s.partnum = f.partnum;
++---------+---------------+---------+------------+---------+
+| partnum | description   | due     | name       | partnum |
++---------+---------------+---------+------------+---------+
+|      76 | ROAD BIKE     | 1590.00 | TRUE WHEEL |      76 |
+|      10 | TANDEM        | 1200.00 | TRUE WHEEL |      10 |
+|      42 | SEATS         |  196.00 | TRUE WHEEL |      42 |
+|      54 | PEDALS        |  542.50 | BIKE SPEC  |      54 |
+|      23 | MOUNTAIN BIKE | 2803.60 | BIKE SPEC  |      23 |
+|      76 | ROAD BIKE     | 5830.00 | BIKE SPEC  |      76 |
+|      76 | ROAD BIKE     | 2650.00 | LE SHOPPE  |      76 |
+|      10 | TANDEM        | 3600.00 | LE SHOPPE  |      10 |
+|      10 | TANDEM        | 1200.00 | AAA BIKE   |      10 |
+|      76 | ROAD BIKE     | 2120.00 | AAA BIKE   |      76 |
+|      46 | TIRES         |  213.50 | AAA BIKE   |      46 |
+|      76 | ROAD BIKE     | 7420.00 | JACKS BIKE |      76 |
++---------+---------------+---------+------------+---------+
+12 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> select p.partnum, p.description, p.price,
+    -> o.name, o.partnum
+    -> from part p
+    -> LEFT OUTER JOIN orders o ON o.partnum = 76;
++---------+---------------+---------+------------+---------+
+| partnum | description   | price   | name       | partnum |
++---------+---------------+---------+------------+---------+
+|      54 | PEDALS        |   54.25 | TRUE WHEEL |      76 |
+|      42 | SEATS         |   24.50 | TRUE WHEEL |      76 |
+|      46 | TIRES         |   15.25 | TRUE WHEEL |      76 |
+|      23 | MOUNTAIN BIKE |  350.45 | TRUE WHEEL |      76 |
+|      76 | ROAD BIKE     |  530.00 | TRUE WHEEL |      76 |
+|      10 | TANDEM        | 1200.00 | TRUE WHEEL |      76 |
+|      54 | PEDALS        |   54.25 | BIKE SPEC  |      76 |
+|      42 | SEATS         |   24.50 | BIKE SPEC  |      76 |
+|      46 | TIRES         |   15.25 | BIKE SPEC  |      76 |
+|      23 | MOUNTAIN BIKE |  350.45 | BIKE SPEC  |      76 |
+|      76 | ROAD BIKE     |  530.00 | BIKE SPEC  |      76 |
+|      10 | TANDEM        | 1200.00 | BIKE SPEC  |      76 |
+|      54 | PEDALS        |   54.25 | LE SHOPPE  |      76 |
+|      42 | SEATS         |   24.50 | LE SHOPPE  |      76 |
+|      46 | TIRES         |   15.25 | LE SHOPPE  |      76 |
+|      23 | MOUNTAIN BIKE |  350.45 | LE SHOPPE  |      76 |
+|      76 | ROAD BIKE     |  530.00 | LE SHOPPE  |      76 |
+|      10 | TANDEM        | 1200.00 | LE SHOPPE  |      76 |
+|      54 | PEDALS        |   54.25 | AAA BIKE   |      76 |
+|      42 | SEATS         |   24.50 | AAA BIKE   |      76 |
+|      46 | TIRES         |   15.25 | AAA BIKE   |      76 |
+|      23 | MOUNTAIN BIKE |  350.45 | AAA BIKE   |      76 |
+|      76 | ROAD BIKE     |  530.00 | AAA BIKE   |      76 |
+|      10 | TANDEM        | 1200.00 | AAA BIKE   |      76 |
+|      54 | PEDALS        |   54.25 | JACKS BIKE |      76 |
+|      42 | SEATS         |   24.50 | JACKS BIKE |      76 |
+|      46 | TIRES         |   15.25 | JACKS BIKE |      76 |
+|      23 | MOUNTAIN BIKE |  350.45 | JACKS BIKE |      76 |
+|      76 | ROAD BIKE     |  530.00 | JACKS BIKE |      76 |
+|      10 | TANDEM        | 1200.00 | JACKS BIKE |      76 |
++---------+---------------+---------+------------+---------+
+30 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> /*This query joins the orders information with the part information. The name of the store that purchased part number 76. */
+MariaDB [BStoyanovdb]> select p.partnum, p.description, p.price, o.name, o.partnum from part p RIGHT OUTER JOIN orders o ON o.partnum = 54;
++---------+---------------+---------+------------+---------+
+| partnum | description   | price   | name       | partnum |
++---------+---------------+---------+------------+---------+
+|      54 | PEDALS        |   54.25 | BIKE SPEC  |      54 |
+|      42 | SEATS         |   24.50 | BIKE SPEC  |      54 |
+|      46 | TIRES         |   15.25 | BIKE SPEC  |      54 |
+|      23 | MOUNTAIN BIKE |  350.45 | BIKE SPEC  |      54 |
+|      76 | ROAD BIKE     |  530.00 | BIKE SPEC  |      54 |
+|      10 | TANDEM        | 1200.00 | BIKE SPEC  |      54 |
+|    NULL | NULL          |    NULL | TRUE WHEEL |      76 |
+|    NULL | NULL          |    NULL | TRUE WHEEL |      10 |
+|    NULL | NULL          |    NULL | TRUE WHEEL |      42 |
+|    NULL | NULL          |    NULL | BIKE SPEC  |      23 |
+|    NULL | NULL          |    NULL | BIKE SPEC  |      76 |
+|    NULL | NULL          |    NULL | LE SHOPPE  |      76 |
+|    NULL | NULL          |    NULL | LE SHOPPE  |      10 |
+|    NULL | NULL          |    NULL | AAA BIKE   |      10 |
+|    NULL | NULL          |    NULL | AAA BIKE   |      76 |
+|    NULL | NULL          |    NULL | AAA BIKE   |      46 |
+|    NULL | NULL          |    NULL | JACKS BIKE |      76 |
++---------+---------------+---------+------------+---------+
+17 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> /* The query returns a full set of data from the table of orders, and places null in the fields where the order partnum <> 54. */
+MariaDB [BStoyanovdb]> /* The inner join gets all records that are common between both tables based on the foreign key. The left outer join allows you to specify a join clause. It keeps the unmatched rows from the first(left) table, joining them with a NULL row in the second(right) table. */
+
+MariaDB [BStoyanovdb]> notee

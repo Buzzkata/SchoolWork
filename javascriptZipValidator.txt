@@ -1,0 +1,107 @@
+<script>
+
+	function Validate() {
+
+	  if (document.getElementById("countryinput").value == "canada") {
+		document.getElementById("1").innerHTML = 'Ontario';
+		document.getElementById("2").innerHTML = 'Alberta';
+
+	  } else if (document.getElementById("countryinput").value == "us") {
+		document.getElementById("1").innerHTML = 'Texas';
+		document.getElementById("2").innerHTML = 'California';
+	  }
+	}
+
+
+	function checkForm(){  //in the html file we add the name theForm as form name
+		if(document.getElementById("addrinput").value == ""){
+			alert("Error. You need to enter an adress.");
+			
+			return false;
+		}
+		if(document.getElementById("cityinput").value == ""){
+			alert("Error. You need to enter a city.");
+			
+			return false;
+		}
+		if(document.getElementById("countryinput").value == "canada"){
+			if(document.getElementById("zipinput").value == ""){
+				alert("Error. Need to enter a postal code.");
+				return false;
+			}
+			else{
+				var userIn = document.getElementById("zipinput").value;
+				if(userIn.length == 6){
+					if(!(Number.isInteger(userIn.charAt(0)))){ //not integer.assuming no special characters entered
+						if(Number.isInteger(userIn.charAt(1))){// number
+							if(!(Number.isInteger(userIn.charAt(2)))){//letter
+								if(Number.isInteger(userIn.charAt(3))){//number
+									if(!(Number.isInteger(userIn.charAt(4)))){//letter
+										if(Number.isInteger(userIn.charAt(5))){//number
+											return true; //valid zip
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				return false;
+			}
+		}else if(document.getElementById('countryinput').value == "us"){
+			//here we validate the us postal code
+		}
+	}
+</script>
+
+
+	html file Bozhidar Stoyanov
+	
+	
+	lab8BS.html file:
+<!DOCTYPE html>
+ <html>
+    <head>
+       <meta charset="utf-8" />
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Lab 8</title>
+
+       <link rel="stylesheet" href="lab8BS.css" />
+    </head>
+    <body>
+       <header>
+          <h1>Lab 8</h1>
+       </header>
+       <article>
+          <h2>Personal Information</h2>
+          <form novalidate="novalidate" onsubmit="return required(this)">
+             <div id="errorText"></div>
+             <div id="numErrorText"></div>
+             <fieldset id="contactinfo">
+                <label for="countryinput"> Country</label>
+                <select id="countryinput" name="Country" onclick="Validate()">
+                   <option value="-1">Please Select a Country</option>
+                   <option value="canada">Canada</option>
+                   <option value="us">US</option>
+                </select>
+                <label for="provinput"> State/Province </label>
+                <select id="provinput" name="ProvinceState">
+                   <option value="-1">Please Select Country First</option>
+                   <option id="1"></option>
+                   <option id="2"></option>
+                </select>
+                <label for="cityinput"> City</label>
+                <input type="text" id="cityinput" name="City"/>
+                <label for="addrinput"> Street Address</label>
+                <input type="text" id="addrinput" name="Address"/>
+                <label for="zipinput">Zip/Postal Code </label>
+                <input type="text" id="zipinput" name="Zip"/>
+             </fieldset>
+             <fieldset id="submitsection">
+                <input type="submit" id="submitBtn" value="Submit" onclick="Zip()" />
+             </fieldset>
+          </form>
+       </article>
+       <script src="lab8BS.js"></script>
+    </body>
+ </html>

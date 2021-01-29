@@ -1,0 +1,89 @@
+MariaDB [BStoyanovdb]> select current_timestamp;
++---------------------+
+| current_timestamp   |
++---------------------+
+| 2019-03-17 22:34:19 |
++---------------------+
+1 row in set (0.000 sec)
+
+MariaDB [BStoyanovdb]> select dayname("2016-10-02") Day;
++--------+
+| Day    |
++--------+
+| Sunday |
++--------+
+1 row in set (0.000 sec)
+
+MariaDB [BStoyanovdb]> select date_format(current_timestamp, "%W, %M %D, %Y");
++-------------------------------------------------+
+| date_format(current_timestamp, "%W, %M %D, %Y") |
++-------------------------------------------------+
+| Sunday, March 17th, 2019                        |
++-------------------------------------------------+
+1 row in set (0.000 sec)
+
+MariaDB [BStoyanovdb]> select date_format("2002-08-12", '%W') Day;
++--------+
+| Day    |
++--------+
+| Monday |
++--------+
+1 row in set (0.000 sec)
+
+MariaDB [BStoyanovdb]> select date_format("1992-01-18", '%W') Day;
++----------+
+| Day      |
++----------+
+| Saturday |
++----------+
+1 row in set (0.000 sec)
+
+MariaDB [BStoyanovdb]> select date_format("1966-11-30", '%W') Day;
++-----------+
+| Day       |
++-----------+
+| Wednesday |
++-----------+
+1 row in set (0.000 sec)
+
+MariaDB [BStoyanovdb]> select date_add("1999-12-31 23:59:59", interval 1 second) "New Year";
++---------------------+
+| New Year            |
++---------------------+
+| 2000-01-01 00:00:00 |
++---------------------+
+1 row in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> select date_format(date_add("1992-08-14", interval 500 day), "%W, %M %D, %Y");
++------------------------------------------------------------------------+
+| date_format(date_add("1992-08-14", interval 500 day), "%W, %M %D, %Y") |
++------------------------------------------------------------------------+
+| Monday, December 27th, 1993                                            |
++------------------------------------------------------------------------+
+1 row in set (0.002 sec)
+
+MariaDB [BStoyanovdb]> select date_format("1993-08-10",'%W');
++--------------------------------+
+| date_format("1993-08-10",'%W') |
++--------------------------------+
+| Tuesday                        |
++--------------------------------+
+1 row in set (0.002 sec)
+
+MariaDB [BStoyanovdb]> select datediff(current_date, "1993-08-10") "Age (days)";
++------------+
+| Age (days) |
++------------+
+|       9350 |
++------------+
+1 row in set (0.002 sec)
+
+MariaDB [BStoyanovdb]> select (datediff("2019-08-10", current_date))*24 "Hours until birthday";
++----------------------+
+| Hours until birthday |
++----------------------+
+|                 3504 |
++----------------------+
+1 row in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> notee

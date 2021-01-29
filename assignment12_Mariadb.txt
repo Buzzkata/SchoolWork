@@ -1,0 +1,128 @@
+MariaDB [BStoyanovdb]> create index zip_index on customer (zip);
+Query OK, 0 rows affected (0.012 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> create index name_index on customer (name);
+Query OK, 0 rows affected (0.018 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> create index part_index on part (partnum);
+Query OK, 0 rows affected (0.010 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> create index partn_index on orders (partnum);
+Query OK, 0 rows affected (0.010 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> create index namen_index on orders (partnum);
+Query OK, 0 rows affected, 1 warning (0.011 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+MariaDB [BStoyanovdb]> select zip from customer;
++-------+
+| zip   |
++-------+
+| 34567 |
+| 45678 |
+| 54678 |
+| 56784 |
+| 58702 |
++-------+
+5 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> select name from customer;
++------------+
+| name       |
++------------+
+| AAA BIKE   |
+| BIKE SPEC  |
+| JACKS BIKE |
+| LE SHOPPE  |
+| TRUE WHEEL |
++------------+
+5 rows in set (0.003 sec)
+
+MariaDB [BStoyanovdb]> select partnum from orders;
++---------+
+| partnum |
++---------+
+|      10 |
+|      10 |
+|      10 |
+|      23 |
+|      42 |
+|      46 |
+|      54 |
+|      76 |
+|      76 |
+|      76 |
+|      76 |
+|      76 |
++---------+
+12 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> select partnum from part;
++---------+
+| partnum |
++---------+
+|      10 |
+|      23 |
+|      42 |
+|      46 |
+|      54 |
+|      76 |
+|      77 |
++---------+
+7 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> drop index zip_index on customer;
+Query OK, 0 rows affected (0.007 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> drop index name_index on customer;
+Query OK, 0 rows affected (0.005 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> drop index part_index on part;
+Query OK, 0 rows affected (0.012 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> drop index partn_index on orders;
+Query OK, 0 rows affected (0.007 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> drop index namen_index on orders;
+Query OK, 0 rows affected (0.004 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> /* If it is overused on a big table, it can have significant performance cost. Since it has to go through the burden of sorting a column with multiple records. */
+MariaDB [BStoyanovdb]> create index brand_index on carsForSale (car_make);
+Query OK, 0 rows affected (0.013 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> select * from carsForSale;
++-----------+---------------+---------------+-----------+-------------------+
+| VinNumber | car_make      | model         | year_make | cars_in_inventory |
++-----------+---------------+---------------+-----------+-------------------+
+|  15537903 | BMW           | M6 Gran Coupe |      2017 |                 2 |
+|  20441923 | Bentley       | Continental   |      2008 |                 1 |
+|  24904781 | Range Rover   | Velar         |      2018 |                 3 |
+|  25001742 | Audi          | A6            |      2016 |                 5 |
+|  89539156 | Mercedes-Benz | C63 AMG       |      2012 |                 1 |
++-----------+---------------+---------------+-----------+-------------------+
+5 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> select car_make from carsForSale;
++---------------+
+| car_make      |
++---------------+
+| Audi          |
+| Bentley       |
+| BMW           |
+| Mercedes-Benz |
+| Range Rover   |
++---------------+
+5 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> notee
+

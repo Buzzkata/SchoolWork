@@ -1,0 +1,62 @@
+MariaDB [BStoyanovdb]> select name, orderedon
+    -> from orders
+    -> where name > 'JACKS BIKE'
+    -> order by name;
++------------+------------+
+| name       | orderedon  |
++------------+------------+
+| LE SHOPPE  | 1996-01-17 |
+| LE SHOPPE  | 1996-06-01 |
+| TRUE WHEEL | 1996-05-19 |
+| TRUE WHEEL | 1996-09-02 |
+| TRUE WHEEL | 1996-06-30 |
++------------+------------+
+5 rows in set (0.002 sec)
+
+MariaDB [BStoyanovdb]> select name, orderedon
+    -> from orders
+    -> where name in
+    -> (select name
+    -> from orders
+    -> where name > 'JACKS BIKE');
++------------+------------+
+| name       | orderedon  |
++------------+------------+
+| TRUE WHEEL | 1996-05-19 |
+| TRUE WHEEL | 1996-09-02 |
+| TRUE WHEEL | 1996-06-30 |
+| LE SHOPPE  | 1996-01-17 |
+| LE SHOPPE  | 1996-06-01 |
++------------+------------+
+5 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> select description, price
+    -> from part
+    -> where price=
+    -> (select max(price)
+    -> from part);
++-------------+---------+
+| description | price   |
++-------------+---------+
+| TANDEM      | 1200.00 |
++-------------+---------+
+1 row in set (0.003 sec)
+
+MariaDB [BStoyanovdb]> /* Question 3. The keywords that are appropriate for obtaining the orders involving part numbers 10 and 76 are: PARTNUM = ANY, PARTNUM = SOME, PARTNUM IN.*/
+MariaDB [BStoyanovdb]> /* Question 4. Subqueries are very useful, because they are used to filter data from one table based on the values in another table. That is why they are also called Nested Queries. Example below shows the store names that purchased partnum 76 or 10. */
+MariaDB [BStoyanovdb]> select name from orders where partnum in (select partnum from part where partnum=76 or partnum=10);
++------------+
+| name       |
++------------+
+| TRUE WHEEL |
+| TRUE WHEEL |
+| BIKE SPEC  |
+| LE SHOPPE  |
+| LE SHOPPE  |
+| AAA BIKE   |
+| AAA BIKE   |
+| JACKS BIKE |
++------------+
+8 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> notee

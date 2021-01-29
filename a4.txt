@@ -1,0 +1,232 @@
+  One of the topics from the game God of War video that was done really well was the story. It had a interactive story about the Kratos character and his family, which took the player on wild adventures. Adding the aspect of family and love made the game even more fun, relatable and engaging. The story of the game is supported from course material on story and particularly on Flow. The story and game dynamics attract the player into the so called Flow state, which gamers find themselves often. The state which occurs when we find ourselves playing video games while completely disregarding time. The game also had great mechanics and as I mentioned great gameplay, which is one of the factors for its success. Story feature of a game is something that I will not overlook when developing games in the future.
+
+
+	/ 22 May 2019
+bstoyanov@shell Notes$ cat Ch02.txt
+2. Lexical Analysis
+bstoyanov@shell Notes$ cat Ch03.txt
+3.  Programming Language Syntax and Parsing
+
+Let G = ( V, T, P, S)
+
+Operator Grammar
+  CFG s.t. 
+    no adjacent NTs in RHSs 
+    no null rules
+
+  example
+    E -> E + E
+
+Parsers
+
+  Top-down
+    S-grammars
+    Q-grammars
+    LL(1) without epsilon rules
+    LL(1)
+
+    RD
+
+    example
+      S' -> S$
+      S  -> ABe
+      A  -> dB
+         -> aS
+         -> c
+      B  -> aS
+         -> b
+
+      First( alpha) = { w in T | alpha =*> w beta|
+      grammar withoug epsilon rules is an LL(1) grammar
+      if forall rules A -> alpha_1 | alpha_2 | ... | alpha_n
+
+        First( alpha_i) intersect First( alpha_j) = Empty for i <> j
+
+
+  Bottom-up parsing
+    also called shirt-reduce parsing
+    read input left to right, and
+    attempt to reconstruct a right-most derivation S =*> w in reverse
+    or reduce the string w in the derivation S =*> w to S
+    i.e. construct the parse tree beginning at the leaves w (the bottom)
+    and working towards the root S (the top)
+
+    LR parsers
+      L(0)
+      SLR(1)
+      LR(1)
+      LALR(1)
+
+    earlier BU parsers
+      operator precedence
+      weak precedence
+      simple prrecedence
+
+viable prefix
+  a prefix of a right sentential form that does not extend beyond a handle
+  i.e. if
+
+    S =*> alpha A w => alpha beta w where A -> beta In P and w In T*
+
+  then any prefix of alpha beta is a viable prefix
+
+LR( 0) item
+  a marked production
+  grammar rule with a . in RHS (indicates how much of RHS has been seen during
+    scan of input)
+
+   
+  example
+    rule X -> AbC yields four items
+      X -> .AbC
+      X -> A.bC
+      X -> Ab.C
+      X -> AbC.
+
+    rule X -> 1 produces one item
+      X -> .
+
+valid item
+  an item A -> beta1 . beta2 is valid for some viable prefix alpha beta1 if
+    S =*> alpha A w => alpha beta1 beta2 w for some w In T*
+
+                      S
+                    /   \
+                   /     \
+                  /       \
+                  alpha A w
+                       / \
+                      /   \
+                     /     \
+                  beta1 . beta2
+                       
+
+   the dot represents current state of the parse
+     left of the dot:  part of input string already scanned
+     right of the dot: part to be visited later
+
+kernel item
+
+closure item
+
+shift item
+  any item with a dot not at the end of the RHS
+
+reduce item
+  an item with a dot at the end
+
+inadequate state
+  have a shift-reduce of reduce-reduce conflict
+  
+CFSM
+  characterisic finite state machine
+
+LR( 0) grammars
+
+LR( 0) criteria
+  (i ) if A -> alpha .x gamma in state S, then B -> beta. not in S,
+       otherwise S/R conflict
+
+  (ii) if A -> alpha. in S, then B -> beta. not in S
+       otherwise R/R conflict
+ 
+  i.e a state can  contain at most a single reduce item
+
+example
+  G: A -> a A b
+       -> c
+
+  G: P -> ( L )
+     L -> L i
+       -> i
+
+  G: S -> ( L )
+       -> i
+     L -> L , S
+       -> S
+
+
+SLR( 1) grammars
+
+  G: E -> T + E
+       -> T
+     T -> i
+
+  G: S -> aABb
+     A -> aAc | 1
+     B -> bB | c
+
+  G: S -> Aa | Bb | ac
+     A -> a
+     B -> a
+
+  G: E -> E + T | T
+     T -> T * F | F
+     F -> ( E) | n
+
+
+LR( 1) grammars
+
+  G: S -> L = R
+     L -> *R
+       -> i
+     R -> L
+
+  G: S -> V = E
+       -> E
+     V -> * E
+       -> i
+     E -> V
+
+  G: S -> AA
+     A -> aA
+       -> b
+
+  G: E -> E + T
+       -> T
+     T -> T * i
+       -> i
+
+  G: E -> T + E
+       -> T
+     T -> F * T
+       -> F
+     F -> i
+
+  G: P -> P ; S
+       -> S
+     S -> i = E
+       -> E
+     E -> E + i
+       -> i
+
+  G: E -> E + T
+       -> T
+     T -> T * F
+       -> F
+     F -> ( E )
+       -> i
+LALR( 1) parsing table construction
+  method 1: first contstruct LR( 1) CFSM
+            (costly due to large number of states in LR( 1) CFSM)
+            then merge states with common cores
+  method 2: an efficient construction method
+
+an LR( 1) parser for ALGOL or Pascal has several thousand states, while
+  an LALR(1) parse has several hundred
+
+ MWHerman / 04 Mar 2019
+bstoyanov@shell Notes$ cat Ch04.txt
+4.  Semantic Analysis
+
+Synthesized attribute
+  information flows up from leaves to root of tree
+
+Inherited attribute
+  information flows down from root to leaves (also between siblings - nodes
+    at same level)
+
+S-attributed AG
+  AG with only synthesized attributes
+  used with BU parsers
+	

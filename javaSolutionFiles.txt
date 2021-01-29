@@ -1,0 +1,129 @@
+public class questionThree {
+	public static void main(String [] args) {
+		Scanner in = new Scanner(System.in); //Creating a scanner to prompt the user for value.
+		
+		boolean valid = false; //Initialize a boolean with original value false.
+		
+		while(!valid){ //Set up a while loop prompting the user to keep entering data while valid is false.
+			System.out.println("Enter a number between 1 and 1o"); //Prints the command.
+			int input = in.nextInt(); //Stores the user input in the integer called "input".
+			
+			if(0<input && input<=10){ //This executes once the condition is met, meaning once the user enters a number between 1 and 10.
+				valid = true; //Change the boolean to true since our condition is met. Now the while loop will not run anymore.
+				
+				for(int i = 1;i<=input;i++){ //Outer loop for the nested for loops needed to form the math table. Will keep executing until it reaches the user value.
+			
+					for(int j = 1; j<=input;j++){ //Inner loop. 
+			
+						System.out.print((i*j) + "\t"); //Prints out on one row the product of the outer loop times the inner loop. 
+			
+					}
+					System.out.println(); //Here a new line is created and int i takes the next number and is again multiplied by the inner loop until it reaches the user value.
+		
+				}
+			}
+		}
+		
+		
+		
+	}
+	
+}
+
+
+
+public class questionTwo { //Public class named questionTwo.
+	public static void main(String [] args) { //Main method.
+		Scanner in = new Scanner(System.in); //Scanner initialization.
+		System.out.println("Enter a double number (negative to quit)): "); //Print command.
+		double user_input = in.nextDouble(); //Store the number from the user in a double called user_input.
+		
+		double product = 1; //Set up a double called product to equal 1. 
+		double sum = 0; //Initialize double called sum which is ised to calculate the sum of all entered values
+		int count = 0; //Initialize the count in order to keep count of entries and if the user entered a negative number from the start
+		double average, range, maximum, minimum; //Set up the doubles for average, range, maximum and minimum.
+		maximum = user_input; //Assign the user entered value to both maximum and minimum.
+		minimum = user_input;
+		
+		
+		
+		while(user_input > 0){ //While loop executes as long as the user input is bigger than 0.
+			product*=user_input; //Multiply every new double entered by the user.
+			sum += user_input; //Add the sum of every input entered.
+			count++; //Increase the count by 1 everytime the while loop goes through (everytime the condition of user input>0 is met).
+			if(user_input > maximum){ //compare the input with the maximum one and assign maximum if its bigger.
+				maximum = user_input;
+			}
+			else if(user_input<minimum){ //compare with the minimum and assign minimum if its smaller.
+				minimum = user_input;
+			}
+			user_input=in.nextDouble(); //Prompting user to reenter data. If its bigger than 0 it will keep going back in the loop.
+		}
+		if(count == 0){ //If count is zero it means the while loop never went through, so the user entered a negative number from the start.
+			System.out.println("You entered an initial negative number."); //Print error message.
+		}
+		
+		else{ //If count is not zero it means that the while loop went through.
+			average = ((double)sum)/count; //Calculate average.
+			range = maximum-minimum; // Calculate range.
+			System.out.println("Count: " + count); //Print the count, maximum, minimum, sum, product, average and range.
+			System.out.println("Max: " + maximum);
+			System.out.println("Min: " + minimum);
+			System.out.println("Sum: " + sum);
+			System.out.println("Product: " + product);
+			System.out.println("Average: "+ average);
+			System.out.println("Range: " + range);
+			System.out.println("Program complete");
+			
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+	}
+
+
+
+}
+
+
+
+public class questionOne { //Public class
+		public static void main(String [] args){ //Main method
+			Scanner in = new Scanner(System.in); //Initialize scanner
+			System.out.println("Enter 3 strings. One per line:"); //Print message
+			
+			String word1 = in.nextLine(); //Store 3 strings from the user in word1, word2, word3
+			String word2 = in.nextLine();
+			String word3 = in.nextLine();
+			
+			int compare1 = word1.compareTo(word2); //Compare the strings using the compareTo method
+			int compare2 = word1.compareTo(word3); //Compare the 3 combinations of 1 and 2, 1 and 3, 2 and 3
+			int compare3 = word2.compareTo(word3);
+			
+			
+			if(compare1 <= 0 && compare3 < 0){ //Compare first word with second and second word with the third. If one of them is bigger than 0 it wont execute.
+				System.out.println("Your strings are in lexicographical order(ascending) !"); //Executes if compare1 and compare2 are positive. They are in order. I set up compare1 to <=0 because the first two words can be equal.
+			}
+			else if(compare1 > 0 && compare3 > 0){ //If they are both bigger than 0 means that they are in descending order
+				System.out.println("Your strings are in lexicographical order (descending) !");
+			}
+			else if(compare1 == 0 && compare3 == 0){ //This executes if the strings are all equal
+				System.out.println("The strings are equal.");
+			}
+			
+			else { //If none of the condiotions was met from above this executes
+				System.out.println("Those strings are not in any order :( "); //Print message
+			}
+			
+			
+			
+			
+			
+			
+		}
+		

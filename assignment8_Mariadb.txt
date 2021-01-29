@@ -1,0 +1,173 @@
+MariaDB [BStoyanovdb]> desc cust;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| cust_id   | varchar(5)   | YES  |     | NULL    |       |
+| stock_id  | decimal(5,0) | NO   |     | NULL    |       |
+| media_id  | decimal(1,0) | NO   |     | NULL    |       |
+| fname     | varchar(10)  | NO   |     | NULL    |       |
+| lname     | varchar(10)  | NO   |     | NULL    |       |
+| dob       | date         | NO   |     | NULL    |       |
+| dt_rent   | date         | YES  |     | NULL    |       |
+| days_rent | decimal(1,0) | NO   |     | NULL    |       |
+| dt_rt     | date         | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+9 rows in set (0.002 sec)
+
+MariaDB [BStoyanovdb]> desc stock;
++----------+---------------+------+-----+---------+-------+
+| Field    | Type          | Null | Key | Default | Extra |
++----------+---------------+------+-----+---------+-------+
+| stock_id | decimal(10,0) | NO   |     | NULL    |       |
+| title    | varchar(80)   | NO   |     | NULL    |       |
+| amount   | decimal(10,0) | NO   |     | NULL    |       |
++----------+---------------+------+-----+---------+-------+
+3 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> desc media;
++-------------+---------------+------+-----+---------+-------+
+| Field       | Type          | Null | Key | Default | Extra |
++-------------+---------------+------+-----+---------+-------+
+| media_id    | decimal(10,0) | NO   |     | NULL    |       |
+| description | varchar(5)    | NO   |     | NULL    |       |
++-------------+---------------+------+-----+---------+-------+
+2 rows in set (0.002 sec)
+
+MariaDB [BStoyanovdb]> /* Cust_id is a primery key in the cust table. The stock_id and media_id are foreign keys pointing to the stock,media tables. In the stock table the stock_id is a primery key. In the media table the media_id is a primery key. */
+MariaDB [BStoyanovdb]> alter table cust add primary key(cust_id,stock_id,media_id);
+Query OK, 0 rows affected (0.020 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> alter table cust
+    -> add constraint stock_id_const foreign key (stock_id) references stock (stock_id);
+ERROR 1005 (HY000): Can't create table `BStoyanovdb`.`#sql-cda_291` (errno: 150 "Foreign key constraint is incorrectly formed")
+MariaDB [BStoyanovdb]> create table sex_codes (sex char(1) not null, constraint check_sex check (sex in('M','F')));
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [BStoyanovdb]> insert into sex_codes values
+    -> ('M');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [BStoyanovdb]> insert into sex_codes values ('Female');
+ERROR 1406 (22001): Data too long for column 'sex' at row 1
+MariaDB [BStoyanovdb]> insert into sex_codes values ('G');
+ERROR 4025 (23000): CONSTRAINT `check_sex` failed for `BStoyanovdb`.`sex_codes`
+MariaDB [BStoyanovdb]> /* MySQL does not support check constraints. The check clause is parsed but ignored by all storage engines. In order to overcome this we can use a trigger that cancels the insertion on certain conditions. */
+MariaDB [BStoyanovdb]> desc carsForSale
+    -> ;
++-------------------+---------------+------+-----+---------+-------+
+| Field             | Type          | Null | Key | Default | Extra |
++-------------------+---------------+------+-----+---------+-------+
+| VinNumber         | decimal(10,0) | YES  |     | NULL    |       |
+| car_make          | char(20)      | YES  |     | NULL    |       |
+| model             | char(20)      | YES  |     | NULL    |       |
+| year_make         | decimal(10,0) | YES  |     | NULL    |       |
+| cars_in_inventory | int(11)       | YES  |     | NULL    |       |
++-------------------+---------------+------+-----+---------+-------+
+5 rows in set (0.004 sec)
+
+MariaDB [BStoyanovdb]> alter table carsForSale
+    -> add primary key(VinNumber);
+Query OK, 0 rows affected (0.023 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> alter table carsForSale modify VinNumber decimal(10,0) not null;
+Query OK, 0 rows affected (0.003 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> desc carsForSale;
++-------------------+---------------+------+-----+---------+-------+
+| Field             | Type          | Null | Key | Default | Extra |
++-------------------+---------------+------+-----+---------+-------+
+| VinNumber         | decimal(10,0) | NO   | PRI | NULL    |       |
+| car_make          | char(20)      | YES  |     | NULL    |       |
+| model             | char(20)      | YES  |     | NULL    |       |
+| year_make         | decimal(10,0) | YES  |     | NULL    |       |
+| cars_in_inventory | int(11)       | YES  |     | NULL    |       |
++-------------------+---------------+------+-----+---------+-------+
+5 rows in set (0.002 sec)
+
+MariaDB [BStoyanovdb]> alter table carsForSale modify car_make chae(20) not null;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'chae(20) not null' at line 1
+MariaDB [BStoyanovdb]> alter table carsForSale modify car_make char(20) not null;
+Query OK, 0 rows affected (0.019 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> alter table carsForSale modify model char(20) not null; 
+Query OK, 0 rows affected (0.018 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> alter table carsForSale modify year_make decimal(10,0) not null;
+Query OK, 0 rows affected (0.015 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> alter table carsForSale modify cars_in_inventory int(11) not null;
+Query OK, 0 rows affected (0.020 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> alter table carsForSale modify VinNumber decimal(10,0) unique;
+Query OK, 0 rows affected (0.013 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> alter table carsForSale modify VinNumber decimal(10,0) unsigned;
+Query OK, 5 rows affected (0.023 sec)              
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> alter table carsForSale modify year_make decimal(10,0) unsigned;
+Query OK, 5 rows affected (0.023 sec)              
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> alter table carsForSale modify cars_in_inventory int(11) unsigned;
+Query OK, 5 rows affected (0.024 sec)              
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> desc carsForSale;
++-------------------+------------------------+------+-----+---------+-------+
+| Field             | Type                   | Null | Key | Default | Extra |
++-------------------+------------------------+------+-----+---------+-------+
+| VinNumber         | decimal(10,0) unsigned | NO   | PRI | NULL    |       |
+| car_make          | char(20)               | NO   |     | NULL    |       |
+| model             | char(20)               | NO   |     | NULL    |       |
+| year_make         | decimal(10,0) unsigned | YES  |     | NULL    |       |
+| cars_in_inventory | int(11) unsigned       | YES  |     | NULL    |       |
++-------------------+------------------------+------+-----+---------+-------+
+5 rows in set (0.006 sec)
+
+MariaDB [BStoyanovdb]> alter table carsForSale modify cars_in_inventory int(11) unsigned not null;
+Query OK, 0 rows affected (0.018 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> alter table carsForSale modify year_make decimal(10,0) unsigned not null;
+Query OK, 0 rows affected (0.023 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> desc carsForSale;
++-------------------+------------------------+------+-----+---------+-------+
+| Field             | Type                   | Null | Key | Default | Extra |
++-------------------+------------------------+------+-----+---------+-------+
+| VinNumber         | decimal(10,0) unsigned | NO   | PRI | NULL    |       |
+| car_make          | char(20)               | NO   |     | NULL    |       |
+| model             | char(20)               | NO   |     | NULL    |       |
+| year_make         | decimal(10,0) unsigned | NO   |     | NULL    |       |
+| cars_in_inventory | int(11) unsigned       | NO   |     | NULL    |       |
++-------------------+------------------------+------+-----+---------+-------+
+5 rows in set (0.002 sec)
+
+MariaDB [BStoyanovdb]> alter table carsForSale modify VinNumber decimal(10,0) unsigned unique;
+Query OK, 0 rows affected, 1 warning (0.011 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+MariaDB [BStoyanovdb]> desc carsForSale;
++-------------------+------------------------+------+-----+---------+-------+
+| Field             | Type                   | Null | Key | Default | Extra |
++-------------------+------------------------+------+-----+---------+-------+
+| VinNumber         | decimal(10,0) unsigned | NO   | PRI | NULL    |       |
+| car_make          | char(20)               | NO   |     | NULL    |       |
+| model             | char(20)               | NO   |     | NULL    |       |
+| year_make         | decimal(10,0) unsigned | NO   |     | NULL    |       |
+| cars_in_inventory | int(11) unsigned       | NO   |     | NULL    |       |
++-------------------+------------------------+------+-----+---------+-------+
+5 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> /* The vin number is our primary key. It represents the car that is for sale. It is also unique, meaning there can never be another car with same vin number. All of the columns are set to not null, because we need data about our car in each column. There are no foreign keys in this table. The vin number, year make, and cars in inventory are set to unsigned which means that they cannot be negative. */
+MariaDB [BStoyanovdb]> notee

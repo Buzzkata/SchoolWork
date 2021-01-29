@@ -1,0 +1,86 @@
+MariaDB [BStoyanovdb]> select team, sickleave
+    -> from orgchart
+    -> where sickleave >= 30;
++-------------+-----------+
+| team        | sickleave |
++-------------+-----------+
+| RESEARCH    |        34 |
+| MARKETING   |        40 |
+| COLLECTIONS |        30 |
++-------------+-----------+
+3 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> select `check`, payee, amount
+    -> from checks
+    -> where `check` = 1;
++-------+---------+--------+
+| check | payee   | amount |
++-------+---------+--------+
+|     1 | Ma Bell | 150.00 |
++-------+---------+--------+
+1 row in set (0.004 sec)
+
+MariaDB [BStoyanovdb]> select team, sum(sickleave), sum(annualleave)
+    -> from orgchart
+    -> group by team
+    -> order by sickleave;
++-------------+----------------+------------------+
+| team        | sum(sickleave) | sum(annualleave) |
++-------------+----------------+------------------+
+| PR          |             24 |               24 |
+| COLLECTIONS |             52 |               41 |
+| RESEARCH    |             54 |               29 |
+| MARKETING   |             85 |               46 |
++-------------+----------------+------------------+
+4 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> select team, sum(sickleave), sum(annualleave)
+    -> from orgchart
+    -> where sickleave > annualleave
+    -> group by team
+    -> having avg(salary) >= 37500
+    -> order by name;
++-------------+----------------+------------------+
+| team        | sum(sickleave) | sum(annualleave) |
++-------------+----------------+------------------+
+| RESEARCH    |             54 |               29 |
+| COLLECTIONS |             52 |               41 |
++-------------+----------------+------------------+
+2 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> /* The above query from question 4 works. */
+MariaDB [BStoyanovdb]> /* The query in question 5 does not work. Since we are grouping them by team, the different teams have different salaries for each person, therefore the avg needs to be used. Team(or the Job field) can have many different job titles, with each of them having many employees(salaries). */
+MariaDB [BStoyanovdb]> select name, team, (sickleave+annualleave)
+    -> from orgchart
+    -> order by (sickleave+annualleave) desc;
++------------+-------------+-------------------------+
+| name       | team        | (sickleave+annualleave) |
++------------+-------------+-------------------------+
+| MEZA       | COLLECTIONS |                      57 |
+| WILKES     | MARKETING   |                      49 |
+| PRECOURT   | PR          |                      48 |
+| ADAMS      | RESEARCH    |                      46 |
+| RICHARDSON | MARKETING   |                      43 |
+| STOKES     | MARKETING   |                      39 |
+| MERRICK    | RESEARCH    |                      37 |
+| FURY       | COLLECTIONS |                      36 |
++------------+-------------+-------------------------+
+8 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> /* Where clause is used to select data in the original tables, while the having clause is used to filter the data in the result set that was outputed by the query. It is an additional filter to the where clause. The having clause can be used with aggregate values, while the where clause cant. The order by alters the order in which the specified values are outputed, while the group by clause will aggregate records by the specified columns. It allows you to perform aggregation functions on non-grouped columns(such as sum,avg, etc.). */
+MariaDB [BStoyanovdb]> select * from checks;
++-------+-------------------+--------+---------------------+
+| check | payee             | amount | remarks             |
++-------+-------------------+--------+---------------------+
+|     1 | Ma Bell           | 150.00 | Have sons next time |
+|     2 | Reading R.R.      | 245.34 | Train to Chicago    |
+|     3 | Ma Bell           | 200.32 | Celluar Phone       |
+|     4 | Local Utilities   |  98.00 | Gas                 |
+|     5 | Joes Stale $ Dent | 150.00 | Groceries           |
+|     6 | Cash              |  25.00 | Wild Night Out      |
+|     7 | Joans Gas         |  25.10 | Gas                 |
++-------+-------------------+--------+---------------------+
+7 rows in set (0.000 sec)
+
+MariaDB [BStoyanovdb]> notee
+

@@ -1,0 +1,151 @@
+MariaDB [BStoyanovdb]> select * from cars;
++----+---------+--------+
+| id | name    | cost   |
++----+---------+--------+
+|  1 | audit   |  52642 |
+|  2 | mercury |  57127 |
+|  3 | lemon   |   9000 |
+|  4 | nikola  |  29000 |
+|  5 | tank    | 350000 |
+|  6 | citrus  |  21000 |
+|  7 | titan   |  41400 |
+|  8 | wagon   |  21600 |
++----+---------+--------+
+8 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> create view cheapcars as
+    -> select name, cost from cars
+    -> where cost < 25000;
+Query OK, 0 rows affected (0.003 sec)
+
+MariaDB [BStoyanovdb]> select * from cheapcars;
++--------+-------+
+| name   | cost  |
++--------+-------+
+| lemon  |  9000 |
+| citrus | 21000 |
+| wagon  | 21600 |
++--------+-------+
+3 rows in set (0.002 sec)
+
+MariaDB [BStoyanovdb]> alter view cheapcars as
+    -> select name, cost from cars
+    -> where cost < 30000;
+Query OK, 0 rows affected (0.002 sec)
+
+MariaDB [BStoyanovdb]> select * from cheapcars;
++--------+-------+
+| name   | cost  |
++--------+-------+
+| lemon  |  9000 |
+| nikola | 29000 |
+| citrus | 21000 |
+| wagon  | 21600 |
++--------+-------+
+4 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> alter table cars
+    -> add sell_price numeric;
+Query OK, 0 rows affected (0.006 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> alter view cheapcars as
+    -> select name, cost, sell_price from cars;
+Query OK, 0 rows affected (0.003 sec)
+
+MariaDB [BStoyanovdb]> update cheapcars
+    -> set sell_price = cost + (0.15 * cost);
+Query OK, 8 rows affected, 2 warnings (0.002 sec)
+Rows matched: 8  Changed: 8  Warnings: 2
+
+MariaDB [BStoyanovdb]> select * from cheapcars;
++---------+--------+------------+
+| name    | cost   | sell_price |
++---------+--------+------------+
+| audit   |  52642 |      60538 |
+| mercury |  57127 |      65696 |
+| lemon   |   9000 |      10350 |
+| nikola  |  29000 |      33350 |
+| tank    | 350000 |     402500 |
+| citrus  |  21000 |      24150 |
+| titan   |  41400 |      47610 |
+| wagon   |  21600 |      24840 |
++---------+--------+------------+
+8 rows in set (0.003 sec)
+
+MariaDB [BStoyanovdb]> update cheapcars
+    -> set cost = cost - 500;
+Query OK, 8 rows affected (0.002 sec)
+Rows matched: 8  Changed: 8  Warnings: 0
+
+MariaDB [BStoyanovdb]> select * from cars;
++----+---------+--------+------------+
+| id | name    | cost   | sell_price |
++----+---------+--------+------------+
+|  1 | audit   |  52142 |      60538 |
+|  2 | mercury |  56627 |      65696 |
+|  3 | lemon   |   8500 |      10350 |
+|  4 | nikola  |  28500 |      33350 |
+|  5 | tank    | 349500 |     402500 |
+|  6 | citrus  |  20500 |      24150 |
+|  7 | titan   |  40900 |      47610 |
+|  8 | wagon   |  21100 |      24840 |
++----+---------+--------+------------+
+8 rows in set (0.000 sec)
+
+MariaDB [BStoyanovdb]> drop table cars;
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [BStoyanovdb]> select * from cheapcars;
+ERROR 1356 (HY000): View 'BStoyanovdb.cheapcars' references invalid table(s) or column(s) or function(s) or definer/invoker of view lack rights to use them
+MariaDB [BStoyanovdb]> /* The view is referencing a deleted table, therefore it results in an error. */
+MariaDB [BStoyanovdb]> create table cars
+    -> (id numeric not null,
+    -> name char(15) not null,
+    -> cost numeric not null);
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [BStoyanovdb]> insert into cars values
+    -> (1,"audit",52642);
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [BStoyanovdb]> insert into cars values (2,"mercury",57127);
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [BStoyanovdb]> insert into cars values (3,"lemon",9000);
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [BStoyanovdb]> insert into cars values (4,"nikola",29000);
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [BStoyanovdb]> insert into cars values (5,"tank",350000);
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [BStoyanovdb]> insert into cars values (6,"citrus",21000);
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [BStoyanovdb]> insert into cars values (7,"titan",41400);
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [BStoyanovdb]> insert into cars values (8,"wagon",21600);
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [BStoyanovdb]> select * from cheapcars;
+ERROR 1356 (HY000): View 'BStoyanovdb.cheapcars' references invalid table(s) or column(s) or function(s) or definer/invoker of view lack rights to use them
+MariaDB [BStoyanovdb]> create view favouritecars as
+    -> select * from cars where id = 2 Union select * from cars where id = 5 Union select * from cars where id = 7;
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [BStoyanovdb]> select * from favouritecars
+    -> ;
++----+---------+--------+
+| id | name    | cost   |
++----+---------+--------+
+|  2 | mercury |  57127 |
+|  5 | tank    | 350000 |
+|  7 | titan   |  41400 |
++----+---------+--------+
+3 rows in set (0.002 sec)
+
+MariaDB [BStoyanovdb]> /* Insert: The insert statement can be used if all NOT NULL columns used in the underlying table are included in the view.  Delete: The delete statement cannot be used on multiple table views.  Update: If a record  is updated with join view, all updated records must be from one table. */
+MariaDB [BStoyanovdb]> notee

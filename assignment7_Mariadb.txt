@@ -1,0 +1,247 @@
+MariaDB [BStoyanovdb]> create table stock
+    -> (stock_id numeric(10) not null,
+    -> title varchar(80) not null,
+    -> amount numeric(10) not null);
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [BStoyanovdb]> insert into stock values(1,'SAHARA',3);
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [BStoyanovdb]> insert into stock values(2,'CASABLANCA',3);
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [BStoyanovdb]> insert into stock values(3,'TO HAVE AND HAVE NOT',1);
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [BStoyanovdb]> insert into stock values(4,'THE MALTESE FALCON',5);
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [BStoyanovdb]> insert into stock values(5,'THE BIG SLEEP',4);
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [BStoyanovdb]> insert into stock values(6,'SAVING PRIVATE RYAN',7);
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [BStoyanovdb]> create table media
+    -> (media_id numeric(10) not null,
+    -> description varchar(5) not null);
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [BStoyanovdb]> insert into media values(1,'DVD');
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [BStoyanovdb]> insert into media values(2,'VIDEO');
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [BStoyanovdb]> select * from stock;
++----------+----------------------+--------+
+| stock_id | title                | amount |
++----------+----------------------+--------+
+|        1 | SAHARA               |      3 |
+|        2 | CASABLANCA           |      3 |
+|        3 | TO HAVE AND HAVE NOT |      1 |
+|        4 | THE MALTESE FALCON   |      5 |
+|        5 | THE BIG SLEEP        |      4 |
+|        6 | SAVING PRIVATE RYAN  |      7 |
++----------+----------------------+--------+
+6 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> select * from media;
++----------+-------------+
+| media_id | description |
++----------+-------------+
+|        1 | DVD         |
+|        2 | VIDEO       |
++----------+-------------+
+2 rows in set (0.000 sec)
+
+MariaDB [BStoyanovdb]> create table cust
+    -> (cust_id numeric(5) not null,
+    -> stock_id numeric(5) not null,
+    -> media_id numeric(1) not null,
+    -> fname varchar(10) not null,
+    -> lname varchar(10) not null,
+    -> dob date not null,
+    -> dt_rent date null,
+    -> days_rent numeric(1) not null,
+    -> dt_rt date null);
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [BStoyanovdb]> insert into cust values
+    -> (11122,3,1,'TULL','JETHRO','1980-05-02','2002-04-14',5,NULL);
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [BStoyanovdb]> insert into cust values
+    -> (11122,4,1,'TULL','JETHRO','1980-05-02','2002-05-01',5,'2002-05-04');
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [BStoyanovdb]> insert into cust values
+    -> (22233,5,1,'SMITH','MISTER','1962-09-03','2002-06-01',1,NULL);
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [BStoyanovdb]> insert into cust values
+    -> (21243,6,2,'KAYLEIGH','YVONNE','1986-05-01','2002-06-10',5,NULL);
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [BStoyanovdb]> insert into cust values
+    -> (34213,2,2,'JUSTESS','HEATHER','1985-12-31','2002-06-02',3,'2002-06-05');
+Query OK, 1 row affected (0.008 sec)
+
+MariaDB [BStoyanovdb]> select * from cust;
++---------+----------+----------+----------+---------+------------+------------+-----------+------------+
+| cust_id | stock_id | media_id | fname    | lname   | dob        | dt_rent    | days_rent | dt_rt      |
++---------+----------+----------+----------+---------+------------+------------+-----------+------------+
+|   11122 |        3 |        1 | TULL     | JETHRO  | 1980-05-02 | 2002-04-14 |         5 | NULL       |
+|   11122 |        4 |        1 | TULL     | JETHRO  | 1980-05-02 | 2002-05-01 |         5 | 2002-05-04 |
+|   22233 |        5 |        1 | SMITH    | MISTER  | 1962-09-03 | 2002-06-01 |         1 | NULL       |
+|   21243 |        6 |        2 | KAYLEIGH | YVONNE  | 1986-05-01 | 2002-06-10 |         5 | NULL       |
+|   34213 |        2 |        2 | JUSTESS  | HEATHER | 1985-12-31 | 2002-06-02 |         3 | 2002-06-05 |
++---------+----------+----------+----------+---------+------------+------------+-----------+------------+
+5 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> desc cust;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| cust_id   | decimal(5,0) | NO   |     | NULL    |       |
+| stock_id  | decimal(5,0) | NO   |     | NULL    |       |
+| media_id  | decimal(1,0) | NO   |     | NULL    |       |
+| fname     | varchar(10)  | NO   |     | NULL    |       |
+| lname     | varchar(10)  | NO   |     | NULL    |       |
+| dob       | date         | NO   |     | NULL    |       |
+| dt_rent   | date         | YES  |     | NULL    |       |
+| days_rent | decimal(1,0) | NO   |     | NULL    |       |
+| dt_rt     | date         | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+9 rows in set (0.003 sec)
+
+MariaDB [BStoyanovdb]> alter table cust
+    -> modify cust_id varchar(5);
+Query OK, 5 rows affected (0.020 sec)              
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> desc stock;
++----------+---------------+------+-----+---------+-------+
+| Field    | Type          | Null | Key | Default | Extra |
++----------+---------------+------+-----+---------+-------+
+| stock_id | decimal(10,0) | NO   |     | NULL    |       |
+| title    | varchar(80)   | NO   |     | NULL    |       |
+| amount   | decimal(10,0) | NO   |     | NULL    |       |
++----------+---------------+------+-----+---------+-------+
+3 rows in set (0.002 sec)
+
+MariaDB [BStoyanovdb]> desc media;
++-------------+---------------+------+-----+---------+-------+
+| Field       | Type          | Null | Key | Default | Extra |
++-------------+---------------+------+-----+---------+-------+
+| media_id    | decimal(10,0) | NO   |     | NULL    |       |
+| description | varchar(5)    | NO   |     | NULL    |       |
++-------------+---------------+------+-----+---------+-------+
+2 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> desc cust;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| cust_id   | varchar(5)   | YES  |     | NULL    |       |
+| stock_id  | decimal(5,0) | NO   |     | NULL    |       |
+| media_id  | decimal(1,0) | NO   |     | NULL    |       |
+| fname     | varchar(10)  | NO   |     | NULL    |       |
+| lname     | varchar(10)  | NO   |     | NULL    |       |
+| dob       | date         | NO   |     | NULL    |       |
+| dt_rent   | date         | YES  |     | NULL    |       |
+| days_rent | decimal(1,0) | NO   |     | NULL    |       |
+| dt_rt     | date         | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+9 rows in set (0.004 sec)
+
+MariaDB [BStoyanovdb]> create table view
+    -> (fname numeric(5) not null,
+    -> title char(10) not null,
+    -> media_id numeric(5) not null);
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [BStoyanovdb]> create table age
+    -> select concat(fname," ",lname)name, title, dob age
+    -> from cust c, stock s
+    -> where c.stock_id = s.stock_id;
+Query OK, 5 rows affected (0.009 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> select * from age;
++-----------------+----------------------+------------+
+| name            | title                | age        |
++-----------------+----------------------+------------+
+| JUSTESS HEATHER | CASABLANCA           | 1985-12-31 |
+| TULL JETHRO     | TO HAVE AND HAVE NOT | 1980-05-02 |
+| TULL JETHRO     | THE MALTESE FALCON   | 1980-05-02 |
+| SMITH MISTER    | THE BIG SLEEP        | 1962-09-03 |
+| KAYLEIGH YVONNE | SAVING PRIVATE RYAN  | 1986-05-01 |
++-----------------+----------------------+------------+
+5 rows in set (0.000 sec)
+
+MariaDB [BStoyanovdb]> alter table age
+    -> add column JUNK_FOOD char(10) not null;
+Query OK, 0 rows affected (0.005 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> alter table age
+    -> change column JUNK_FOOD snacks char(30);
+Query OK, 5 rows affected (0.018 sec)              
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [BStoyanovdb]> create table carsForSale
+    -> (Vin_Number numeric,
+    -> car_make char(20),
+    -> model char(20),
+    -> year_make numeric,
+    -> cars_in_inventory integer);
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [BStoyanovdb]> insert into carsForSale values
+    -> (15537903,'BMW','M6 Gran Coupe',2017,2);
+Query OK, 1 row affected (0.009 sec)
+
+MariaDB [BStoyanovdb]> insert into carsForSale values
+    -> (89539156,'Mercedes-Benz','C63 AMG',2012,1);
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [BStoyanovdb]> insert into carsForSale values
+    -> (25001742,'Audi','A6',2016,5);
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [BStoyanovdb]> insert into carsForSale values
+    -> (24904781,'Range Rover','Velar',2018,3);
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [BStoyanovdb]> insert into carsForSale values
+    -> (20441923,'Bentley','Continental',2008,1);
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [BStoyanovdb]> desc carsForSale;
++-------------------+---------------+------+-----+---------+-------+
+| Field             | Type          | Null | Key | Default | Extra |
++-------------------+---------------+------+-----+---------+-------+
+| Vin_Number        | decimal(10,0) | YES  |     | NULL    |       |
+| car_make          | char(20)      | YES  |     | NULL    |       |
+| model             | char(20)      | YES  |     | NULL    |       |
+| year_make         | decimal(10,0) | YES  |     | NULL    |       |
+| cars_in_inventory | int(11)       | YES  |     | NULL    |       |
++-------------------+---------------+------+-----+---------+-------+
+5 rows in set (0.004 sec)
+
+MariaDB [BStoyanovdb]> select * from carsForSale;
++-----------+---------------+---------------+-----------+-------------------+
+| Vin_Number| car_make      | model         | year_make | cars_in_inventory |
++-----------+---------------+---------------+-----------+-------------------+
+|  15537903 | BMW           | M6 Gran Coupe |      2017 |                 2 |
+|  89539156 | Mercedes-Benz | C63 AMG       |      2012 |                 1 |
+|  25001742 | Audi          | A6            |      2016 |                 5 |
+|  24904781 | Range Rover   | Velar         |      2018 |                 3 |
+|  20441923 | Bentley       | Continental   |      2008 |                 1 |
++-----------+---------------+---------------+-----------+-------------------+
+5 rows in set (0.001 sec)
+
+MariaDB [BStoyanovdb]> /* Purpose of the table is to store unique data about a cars for sale shop. */
+MariaDB [BStoyanovdb]> notee
+
