@@ -1,0 +1,25 @@
+; mnemonics for some commonly occurring literals
+
+cr		equ	0Dh
+lf		equ	0Ah
+bs		equ	08h
+tab		equ	09h
+escape		equ	1Bh
+ctrlz		equ	1Ah
+
+dosfunc		equ	21h
+ret2dos		equ	4Ch
+rdkbe		equ	01h
+rdkbb		equ	0Ah
+wrchr		equ	02h
+wrstr		equ	09h
+
+false		equ	0
+true		equ	1
+minint		equ	8000h
+
+; deprecated mnemonics
+readkbe		equ	01h
+readkbb		equ	0Ah
+dispchr		equ	02h
+dispstr		equ	09h
